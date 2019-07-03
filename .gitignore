@@ -1,0 +1,8 @@
+# rubocop
+/.rubocop-*-yml
+
+# vagrant
+/.vagrant/
+
+# Generated gem file
+rest-client-wrapper-*.gem
