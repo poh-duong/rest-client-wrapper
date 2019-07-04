@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["University of Adelaide"]
   s.email       = ["myuni.admin@adelaide.edu.au"]
-  s.homepage    = "https://github.com/myuni-admin-uofa/rest-client-wrapper"
+  s.homepage    = "https://github.com/universityofadelaide/rest-client-wrapper"
   s.summary     = "Rest client wrapper"
   s.description = "Generic REST client wrapper"
   s.license     = "GPL 3.0"
