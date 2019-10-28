@@ -142,7 +142,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when payload is not a hash" do
 
         it "will raise TypeError" do
-          expect { Request.new({ http_method: :get, uri: @api_uri, segment_params: @param_hash, payload: @non_hash_value }) }.to raise_error(TypeError)
+          expect { Request.new({ http_method: :put, uri: @api_uri, segment_params: @param_hash, payload: @non_hash_value }) }.to raise_error(TypeError)
         end
 
       end

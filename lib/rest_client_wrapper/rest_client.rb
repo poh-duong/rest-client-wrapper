@@ -66,7 +66,7 @@ module RestClientWrapper
         response_code = nil
 
         begin
-          payload = Request::HTTP_METHOD_FOR_JSON.include?(request.http_method) ? request.payload.to_json : request.payload
+          payload = Request::HTTP_METHOD_FOR_JSON.include?(request.http_method) && request.headers[:content_type] == :json ? request.payload.to_json : request.payload
           request.headers[:params] = request.query_params
           response = ::RestClient::Request.execute({ method: request.http_method, url: url, payload: payload, headers: request.headers })
           response_code = response&.code

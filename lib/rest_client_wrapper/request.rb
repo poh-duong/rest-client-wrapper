@@ -31,10 +31,10 @@ module RestClientWrapper
     def initialize(http_method:, uri:, segment_params: {}, payload: {}, query_params: {}, headers: {}) # rubocop:disable Metrics/ParameterLists
       @uri = uri
       self.headers = headers
+      self.http_method = http_method
       self.segment_params = segment_params
       self.payload = payload
       self.query_params = query_params
-      self.http_method = http_method
     end
 
     def http_method=(http_method)
@@ -47,7 +47,7 @@ module RestClientWrapper
     end
 
     def payload=(payload)
-      raise TypeError, "Request payload parameters is not a hash" unless payload.is_a?(Hash) && headers[:content_type] == DEFAULT_CONTENT_TYPE[:content_type]
+      raise TypeError, "Request payload parameters is not a hash" if !payload.is_a?(Hash) && self.headers[:content_type] == :json
 
       @payload = payload
     end
