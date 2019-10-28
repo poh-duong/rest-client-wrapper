@@ -47,7 +47,7 @@ module RestClientWrapper
     end
 
     def payload=(payload)
-      raise TypeError, "Request payload parameters is not a hash" unless payload.is_a?(Hash)
+      raise TypeError, "Request payload parameters is not a hash" unless payload.is_a?(Hash) && headers[:content_type] == DEFAULT_CONTENT_TYPE[:content_type]
 
       @payload = payload
     end
