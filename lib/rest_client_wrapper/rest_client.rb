@@ -84,22 +84,21 @@ module RestClientWrapper
       end
     end
 
-    def make_request(http_method:, uri:, payload: {}, query_params: {}, headers: {})
-      parsed_uri = URI.parse(uri)
+    def execute_paginated_request(request:, data: true)
+      return self.make_request_for_pages({ http_method: request.http_method, uri: request.uri, segment_params: request.segment_params, query_params: request.query_params, headers: request.headers, data: data }) # rubocop:disable Metrics/LineLength
+    end
 
-      raise ArgumentError, "URL host does not match config host of instance, unable to make API call" if parsed_uri.absolute? && @host.casecmp("#{ parsed_uri.scheme }://#{ parsed_uri.host }").nonzero?
-
-      uri = parsed_uri.absolute? ? parsed_uri.path : uri
-      request = Request.new({ http_method: http_method, uri: uri, payload: payload, query_params: query_params })
+    def make_request(http_method:, uri:, payload: {}, segment_params: {}, query_params: {}, headers: {})
+      request = Request.new({ http_method: http_method, uri: uri, payload: payload, segment_params: segment_params, query_params: query_params })
       request.headers = headers
       return self.execute({ request: request })
     end
 
-    def make_request_for_pages(http_method:, uri:, query_params: {}, headers: {}, data: false)
+    def make_request_for_pages(http_method:, uri:, segment_params: {}, query_params: {}, headers: {}, data: false)
       raise RestClientError.new("Paginator not set, unable to make API call", nil, nil) unless @paginator
 
       @paginator.rest_client ||= self
-      return @paginator.paginate({ http_method: http_method, uri: uri, query_params: query_params, headers: headers, data: data })
+      return @paginator.paginate({ http_method: http_method, uri: uri, segment_params: segment_params, query_params: query_params, headers: headers, data: data })
     end
 
     private
@@ -121,7 +120,11 @@ module RestClientWrapper
     end
 
     def _build_uri(request)
-      return format("#{ @host }#{ request.uri }", request.segment_params)
+      uri = format(request.uri, request.segment_params)
+      parsed_uri = URI.parse(uri)
+      raise ArgumentError, "URL host does not match config host of instance, unable to make API call" if parsed_uri.absolute? && @host.casecmp("#{ parsed_uri.scheme }://#{ parsed_uri.host }").nonzero?
+
+      return parsed_uri.absolute? ? uri : "#{ @host }#{ uri }"
     end
 
     def _validate_request(request)
