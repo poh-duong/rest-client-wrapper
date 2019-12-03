@@ -36,13 +36,13 @@ module RestClientWrapper
         @config = { limit: limit }
       end
 
-      def paginate(http_method:, uri:, query_params: {}, headers: {}, data: false)
+      def paginate(http_method:, uri:, segment_params: {}, query_params: {}, headers: {}, data: false)
         raise RestClientError.new("Client not set, unable to make API call", nil, nil) unless @rest_client
 
         query_params.reverse_merge!(@config)
         responses = []
         loop do
-          response = @rest_client.make_request({ http_method: http_method, uri: uri, query_params: query_params, headers: headers })
+          response = @rest_client.make_request({ http_method: http_method, uri: uri, segment_params: segment_params, query_params: query_params, headers: headers })
           block_given? ? yield(response) : (responses << response)
           links = _pagination_links(response)
           break unless links.key?(:offset)

@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.summary     = "Rest client wrapper"
   s.description = "Generic REST client wrapper"
   s.license     = "GPL 3.0"
-  s.required_ruby_version = ">= 2.4.0"
+  s.required_ruby_version = ">= 2.6.0"
 
   s.add_runtime_dependency "json", "~> 1.8", ">= 1.8.3"
   s.add_runtime_dependency "oauth2", "~> 1.2"
