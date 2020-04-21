@@ -27,10 +27,6 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Max: 100
 
-# The default is too small
-Metrics/LineLength:
-  Max: 200
-
 Metrics/AbcSize:
   Enabled: false
 
@@ -59,6 +55,10 @@ Layout/EmptyLinesAroundClassBody:
 Layout/EmptyLinesAroundModuleBody:
   EnforcedStyle: empty_lines
 
+# The default is too small
+Layout/LineLength:
+  Max: 200
+
 # No space makes the method definition shorter and differentiates
 # from a regular assignment.
 Layout/SpaceAroundEqualsInParameterDefault:
@@ -77,7 +77,7 @@ Layout/DotPosition:
   EnforcedStyle: trailing
 
 # Sometimes key, sometimes table - table is (slightly) more common (probably)
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedHashRocketStyle: table
   EnforcedColonStyle: table
 
@@ -112,7 +112,3 @@ Style/RedundantSelf:
 # The default of require_no_parentheses makes ternary's much harder to read (and more error-prone when operator precedence comes into play)
 Style/TernaryParentheses:
   EnforcedStyle: require_parentheses
-
-# Prefer Braces around Hash parameters
-Style/BracesAroundHashParameters:
-  Enabled: false
