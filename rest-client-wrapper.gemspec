@@ -32,10 +32,10 @@ Gem::Specification.new do |s|
   s.license     = "GPL 3.0"
   s.required_ruby_version = ">= 2.6.0"
 
-  s.add_runtime_dependency "json", "~> 1.8", ">= 1.8.3"
-  s.add_runtime_dependency "oauth2", "~> 1.2"
-  s.add_runtime_dependency "rack", "~> 2.0.5"
-  s.add_runtime_dependency "rest-client", "~> 2.0.2"
+  s.add_runtime_dependency "json", ">= 1.8.3"
+  s.add_runtime_dependency "oauth2", ">= 1.2"
+  s.add_runtime_dependency "rack", ">= 2.0.5"
+  s.add_runtime_dependency "rest-client", ">= 2.0.2"
   s.add_runtime_dependency "typhoeus", "~> 1.0", ">= 1.0.1"
 
   s.add_development_dependency "colorize", "~> 0.7", ">= 0.7.0"
