@@ -55,7 +55,7 @@ module RestClientWrapper
       private
 
       def _pagination_links(response)
-        next_l = response&.body&.[](:next) || ""
+        next_l = response&.body.class == Hash ? response&.body&.[](:next) || "" : ""
         next_h = Rack::Utils.parse_query(URI.parse(next_l)&.query)
         return next_h.symbolize_keys!
       end
