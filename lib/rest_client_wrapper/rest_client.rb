@@ -153,8 +153,8 @@ module RestClientWrapper
     end
 
     def _parse_json(response)
+      return response.body if response.body&.empty?
       return { ok: true } if response.body == "ok".to_json # Handle special case for Echo delete responses
-
       return JSON.parse(response.body, { object_class: Hash, symbolize_names: true })
     rescue StandardError => e
       raise RestClientError.new("Response could not be parsed as JSON", response, e)
