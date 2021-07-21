@@ -29,9 +29,9 @@ module RestClientWrapper
 
       include Auth
 
-      def initialize(username, password)
-        @username = username
-        @password = password
+      def initialize(**config)
+        @username = config[:username]
+        @password = config[:password]
       end
 
       def generate_auth

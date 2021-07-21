@@ -21,20 +21,20 @@ module RestClientWrapper
   # Request
   class Request
 
-    attr_reader :uri, :headers, :http_method, :payload, :segment_params, :query_params
-    attr_writer :uri
+    attr_accessor :uri
+    attr_reader :headers, :http_method, :payload, :segment_params, :query_params
 
     DEFAULT_CONTENT_TYPE = { content_type: :json, accept: :json }.freeze # default content type for post and put requests
     VALID_HTTP_METHODS = %i[get post put patch delete connect options trace].freeze
     HTTP_METHOD_FOR_JSON = %i[post put patch].freeze
 
-    def initialize(http_method, uri, segment_params={}, payload={}, query_params={}, headers={})
-      @uri = uri
-      self.headers = headers
-      self.http_method = http_method
-      self.segment_params = segment_params
-      self.payload = payload
-      self.query_params = query_params
+    def initialize(**params)
+      @uri = params[:uri]
+      self.headers = params[:headers].nil? ? {} : params[:headers]
+      self.http_method = params[:http_method]
+      self.segment_params = params[:segment_params].nil? ? {} : params[:segment_params]
+      self.payload = params[:payload].nil? ? {} : params[:payload]
+      self.query_params = params[:query_params].nil? ? {} : params[:query_params]
     end
 
     def http_method=(http_method)

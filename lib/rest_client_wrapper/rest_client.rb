@@ -129,7 +129,7 @@ module RestClientWrapper
 
     def _validate_request(request)
       # Regex to find segments in uri with the pattern <segment_param>
-      url_segments = request.uri.scan(/\<(.*?)\>/).flatten
+      url_segments = request.uri.scan(/<(.*?)>/).flatten
       url_segments.each do |url_segment|
         raise ArgumentError, "Segment parameter not provided for #{ url_segment }. URI #{ request.uri }" unless request.segment_params.include? url_segment.to_sym
       end
