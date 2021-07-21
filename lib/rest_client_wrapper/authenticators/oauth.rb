@@ -36,7 +36,7 @@ module RestClientWrapper
 
       @@api_client = {} # rubocop:disable Style/ClassVars
 
-      def initialize(site:, token_url_path:, client_id:, client_secret:)
+      def initialize(site, token_url_path, client_id, client_secret)
         @client_id = client_id
         @@api_client[client_id] = { lock: Mutex.new, settings: { site: site, token_url_path: token_url_path, client_secret: client_secret }, access_token: nil, refresh_token: nil }
       end
