@@ -32,9 +32,9 @@ module RestClientWrapper
 
       TYPE = %i[header query_param].freeze
 
-      def initialize(type:, auth_param:)
-        self.type = type
-        self.auth_param = auth_param
+      def initialize(**config)
+        self.type = config[:type]
+        self.auth_param = config[:auth_param]
       end
 
       def generate_auth

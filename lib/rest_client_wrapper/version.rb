@@ -18,6 +18,6 @@
 
 module RestClientWrapper
 
-  VERSION = "3.2.1".freeze
+  VERSION = "4.0.0".freeze
 
 end
