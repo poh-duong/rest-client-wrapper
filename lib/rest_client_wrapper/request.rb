@@ -28,13 +28,13 @@ module RestClientWrapper
     VALID_HTTP_METHODS = %i[get post put patch delete connect options trace].freeze
     HTTP_METHOD_FOR_JSON = %i[post put patch].freeze
 
-    def initialize(http_method, uri, segment_params={}, payload={}, query_params={}, headers={})
+    def initialize(**params)
       @uri = uri
-      self.headers = headers
-      self.http_method = http_method
-      self.segment_params = segment_params
-      self.payload = payload
-      self.query_params = query_params
+      self.headers = params[:headers]
+      self.http_method = params[:http_method]
+      self.segment_params = params[:segment_params]
+      self.payload = params[:payload]
+      self.query_params = params[:query_params]
     end
 
     def http_method=(http_method)
