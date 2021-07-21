@@ -29,7 +29,7 @@ module RestClientWrapper
     HTTP_METHOD_FOR_JSON = %i[post put patch].freeze
 
     def initialize(**params)
-      @uri = uri
+      @uri = params[:uri]
       self.headers = params[:headers].nil? ? {} : params[:headers]
       self.http_method = params[:http_method]
       self.segment_params = params[:segment_params].nil? ? {} : params[:segment_params] 
