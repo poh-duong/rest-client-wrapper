@@ -437,7 +437,7 @@ canvas_data = canvas_client.make_request_for_pages({ http_method: :get, uri: "/a
 ### Echo
 
 ```ruby
-echo_host = "https://echo360.org.au"
+echo_host = "https://echo360.net.au"
 echo_client_id = "client_id"
 echo_client_secret = "client_secret"
 echo_client = Client.new({ host: echo_host })
