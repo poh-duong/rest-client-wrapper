@@ -15,6 +15,3 @@
 # You should have received a copy of the GNU General Public License
 # along with Rest-Client-Wrapper. If not, see <http://www.gnu.org/licenses/>.
 #
-
-RSpec.shared_context "stub_helper", { shared_context: :metadata } do
-end

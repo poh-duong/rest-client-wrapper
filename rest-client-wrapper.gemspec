@@ -30,22 +30,17 @@ Gem::Specification.new do |s|
   s.summary     = "Rest client wrapper"
   s.description = "Generic REST client wrapper"
   s.license     = "GPL 3.0"
-  s.required_ruby_version = ">= 2.6.0"
+  s.required_ruby_version = ">= 3.2.2"
 
-  s.add_runtime_dependency "json", ">= 1.8.3"
-  s.add_runtime_dependency "oauth2", ">= 1.2"
-  s.add_runtime_dependency "rack", ">= 2.0.5"
-  s.add_runtime_dependency "rest-client", ">= 2.0.2"
-  s.add_runtime_dependency "typhoeus", "~> 1.0", ">= 1.0.1"
-
-  s.add_development_dependency "colorize", "~> 0.7", ">= 0.7.0"
-  s.add_development_dependency "geminabox", "~> 0.13.0"
-  s.add_development_dependency "rspec", "~> 3.4", ">= 3.4.0"
+  s.add_runtime_dependency "json", "~> 2.6.3"
+  s.add_runtime_dependency "oauth2", "~> 2.0.9"
+  s.add_runtime_dependency "rest-client", "~> 2.1.0"
+  s.add_runtime_dependency "typhoeus", "~> 1.4"
 
   s.metadata["allowed_push_host"] = "https://rubygems.org"
 
   s.files = Dir.glob("lib/**/*.{rake,rb}") + ["#{ s.name }.gemspec", "README.md"]
-  s.test_files    = `find spec/*`.split("\n")
   s.executables   = []
   s.require_paths = ["lib"]
+  s.metadata["rubygems_mfa_required"] = "true"
 end

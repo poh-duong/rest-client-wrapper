@@ -33,7 +33,7 @@ module RestClientWrapper
 
     # success
     def self.success?(code)
-      return SUCCESS_STATUS_CODES[code].nil? ? false : true
+      return !SUCCESS_STATUS_CODES[code].nil?
     end
 
     # 200

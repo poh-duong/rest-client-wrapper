@@ -33,7 +33,7 @@ module RestClientWrapper
 
       def initialize(limit: Paginate::DEFAULT_PAGINATION_PAGE_SIZE)
         @rest_client = nil
-        @config = { limit: limit }
+        @config = { limit: }
       end
 
       def paginate(http_method:, uri:, segment_params: {}, query_params: {}, headers: {}, data: false)
@@ -42,14 +42,14 @@ module RestClientWrapper
         query_params.reverse_merge!(@config)
         responses = []
         loop do
-          response = @rest_client.make_request({ http_method: http_method, uri: uri, segment_params: segment_params, query_params: query_params, headers: headers })
-          block_given? ? yield(response) : (responses << response)
+          response = @rest_client.make_request(http_method:, uri:, segment_params:, query_params:, headers:)
+          (block_given?) ? yield(response) : (responses << response)
           links = _pagination_links(response)
           break unless links.key?(:offset)
 
           query_params[:offset] = links[:offset]
         end
-        return data ? responses.map(&:body).pluck(:data).flatten : responses
+        return (data) ? responses.map(&:body).pluck(:data).flatten : responses
       end
 
       private

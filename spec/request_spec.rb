@@ -38,7 +38,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http_method is not a valid http method" do
 
         it "will raise TypeError" do
-          expect { Request.new({ http_method: @non_http_method, uri: @api_uri }) }.to raise_error(ArgumentError)
+          expect { Request.new(http_method: @non_http_method, uri: @api_uri) }.to raise_error(ArgumentError)
         end
 
       end
@@ -46,7 +46,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http_method is not a symbol" do
 
         it "will raise TypeError" do
-          expect { Request.new({ http_method: @non_symbol_value, uri: @api_uri }) }.to raise_error(TypeError)
+          expect { Request.new(http_method: @non_symbol_value, uri: @api_uri) }.to raise_error(TypeError)
         end
 
       end
@@ -54,7 +54,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http method :get is assigned" do
 
         it "value is assigned to request http_method" do
-          request = Request.new({ http_method: :get, uri: @api_uri })
+          request = Request.new(http_method: :get, uri: @api_uri)
           expect(request.http_method).to eq(:get)
         end
 
@@ -63,7 +63,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http method :post is assigned" do
 
         it "value is assigned to request http_method" do
-          request = Request.new({ http_method: :post, uri: @api_uri })
+          request = Request.new(http_method: :post, uri: @api_uri)
           expect(request.http_method).to eq(:post)
         end
 
@@ -72,7 +72,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http method :put is assigned" do
 
         it "value is assigned to request http_method" do
-          request = Request.new({ http_method: :put, uri: @api_uri })
+          request = Request.new(http_method: :put, uri: @api_uri)
           expect(request.http_method).to eq(:put)
         end
 
@@ -81,7 +81,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http method :delete is assigned" do
 
         it "value is assigned to request http_method" do
-          request = Request.new({ http_method: :delete, uri: @api_uri })
+          request = Request.new(http_method: :delete, uri: @api_uri)
           expect(request.http_method).to eq(:delete)
         end
 
@@ -90,7 +90,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http method :connect is assigned" do
 
         it "value is assigned to request http_method" do
-          request = Request.new({ http_method: :connect, uri: @api_uri })
+          request = Request.new(http_method: :connect, uri: @api_uri)
           expect(request.http_method).to eq(:connect)
         end
 
@@ -99,7 +99,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http method :options is assigned" do
 
         it "value is assigned to request http_method" do
-          request = Request.new({ http_method: :options, uri: @api_uri })
+          request = Request.new(http_method: :options, uri: @api_uri)
           expect(request.http_method).to eq(:options)
         end
 
@@ -108,7 +108,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when http method :trace is assigned" do
 
         it "value is assigned to request http_method" do
-          request = Request.new({ http_method: :trace, uri: @api_uri })
+          request = Request.new(http_method: :trace, uri: @api_uri)
           expect(request.http_method).to eq(:trace)
         end
 
@@ -121,7 +121,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when segment_params is not a hash" do
 
         it "will raise TypeError" do
-          expect { Request.new({ http_method: :get, uri: @api_uri, segment_params: @non_hash_value }) }.to raise_error(TypeError)
+          expect { Request.new(http_method: :get, uri: @api_uri, segment_params: @non_hash_value) }.to raise_error(TypeError)
         end
 
       end
@@ -129,7 +129,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when segment_params is a hash" do
 
         it "value is assigned to request segment_params" do
-          request = Request.new({ http_method: :get, uri: @api_uri, segment_params: @param_hash })
+          request = Request.new(http_method: :get, uri: @api_uri, segment_params: @param_hash)
           expect(request.segment_params).to eq(@param_hash)
         end
 
@@ -142,7 +142,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when payload is not a hash" do
 
         it "will raise TypeError" do
-          expect { Request.new({ http_method: :put, uri: @api_uri, segment_params: @param_hash, payload: @non_hash_value }) }.to raise_error(TypeError)
+          expect { Request.new(http_method: :put, uri: @api_uri, segment_params: @param_hash, payload: @non_hash_value) }.to raise_error(TypeError)
         end
 
       end
@@ -150,7 +150,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when payload is a hash" do
 
         it "value is assigned to request payload" do
-          request = Request.new({ http_method: :get, uri: @api_uri, segment_params: @param_hash, payload: @param_hash })
+          request = Request.new(http_method: :get, uri: @api_uri, segment_params: @param_hash, payload: @param_hash)
           expect(request.payload).to eq(@param_hash)
         end
 
@@ -163,7 +163,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when headers is not a hash" do
 
         it "will raise TypeError" do
-          request = Request.new({ http_method: :get, uri: @api_uri, segment_params: @param_hash, payload: @param_hash })
+          request = Request.new(http_method: :get, uri: @api_uri, segment_params: @param_hash, payload: @param_hash)
           expect { request.headers = @non_hash_value }.to raise_error(TypeError)
         end
 
@@ -172,7 +172,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when headers is a hash" do
 
         it "value is assigned to request header" do
-          request = Request.new({ http_method: :get, uri: @api_uri, segment_params: @param_hash, payload: @param_hash })
+          request = Request.new(http_method: :get, uri: @api_uri, segment_params: @param_hash, payload: @param_hash)
           expect(request.payload).to eq(@param_hash)
         end
 

@@ -30,11 +30,11 @@ module RestClientWrapper
 
     def initialize(**params)
       @uri = params[:uri]
-      self.headers = params[:headers].nil? ? {} : params[:headers]
+      self.headers = (params[:headers].nil?) ? {} : params[:headers]
       self.http_method = params[:http_method]
-      self.segment_params = params[:segment_params].nil? ? {} : params[:segment_params]
-      self.payload = params[:payload].nil? ? {} : params[:payload]
-      self.query_params = params[:query_params].nil? ? {} : params[:query_params]
+      self.segment_params = (params[:segment_params].nil?) ? {} : params[:segment_params]
+      self.payload = (params[:payload].nil?) ? {} : params[:payload]
+      self.query_params = (params[:query_params].nil?) ? {} : params[:query_params]
     end
 
     def http_method=(http_method)
@@ -67,7 +67,7 @@ module RestClientWrapper
     def headers=(headers)
       raise TypeError, "Request headers parameters is not a hash" unless headers.is_a?(Hash)
 
-      @headers.nil? ? @headers = headers : @headers.merge!(headers)
+      (@headers.nil?) ? @headers = headers : @headers.merge!(headers)
     end
 
   end

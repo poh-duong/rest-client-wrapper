@@ -21,7 +21,7 @@
 require "irb"
 require_relative "../lib/rest_client_wrapper"
 
-def reload!(print=true)
+def reload!(print: true)
   puts "Reloading ..." if print
   # Main project directory.
   root_dir = File.expand_path("..", __dir__)

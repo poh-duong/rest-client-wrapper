@@ -33,7 +33,7 @@ module RestClientWrapper
 
       def initialize(per_page: Paginate::DEFAULT_PAGINATION_PAGE_SIZE)
         @rest_client = nil
-        @config = { page: nil, per_page: per_page }
+        @config = { page: nil, per_page: }
       end
 
       def paginate(http_method:, uri:, segment_params: {}, query_params: {}, headers: {}, data: false)
@@ -43,18 +43,18 @@ module RestClientWrapper
         responses = []
         loop.with_index(1) do |_, page|
           query_params[:page] = page
-          response = @rest_client.make_request({ http_method: http_method, uri: uri, segment_params: segment_params, query_params: query_params, headers: headers })
-          block_given? ? yield(response) : (responses << response)
+          response = @rest_client.make_request(http_method:, uri:, segment_params:, query_params:, headers:)
+          (block_given?) ? yield(response) : (responses << response)
           links = _pagination_links(response)
           break unless links.key?(:next)
         end
-        return data ? responses.map(&:body).flatten : responses
+        return (data) ? responses.map(&:body).flatten : responses
       end
 
       private
 
-      def _pagination_links(response)
-        re_uri = "\<(.*?)\>".freeze
+      def _pagination_links(response) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+        re_uri = "<(.*?)>".freeze
         re_rel = "current|next|first|last".freeze
         links_a = response&.headers&.[](:link)&.split(",") || []
         links_h = {}

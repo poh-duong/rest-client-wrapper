@@ -50,14 +50,14 @@ module RestClientWrapper
       end
 
       def generate_auth
-        Authenticator::Oauth.authenticate({ client_id: @client_id }) if @@api_client&.[](@client_id)&.[](:access_token).nil?
+        Authenticator::Oauth.authenticate(client_id: @client_id) if @@api_client&.[](@client_id)&.[](:access_token).nil?
         access_token = @@api_client&.[](@client_id)&.[](:access_token)
         raise StandardError "Unable to authenticate #{ @client_id }" if @@api_client&.[](@client_id)&.[](:access_token).nil?
 
         return { Authorization: "Bearer #{ access_token }" }
       end
 
-      def self.authenticate(client_id:, access_token: nil)
+      def self.authenticate(client_id:, access_token: nil) # rubocop:disable Metrics/CyclomaticComplexity,  Metrics/PerceivedComplexity
         # Ensure that other threads aren't checking and updating the token at the same time
         @@api_client[client_id][:lock].synchronize do
           # Return access_token from @@api_client when the current_token is different to what's in @@api_client as it's already been refreshed
@@ -65,12 +65,12 @@ module RestClientWrapper
 
           payload = {
             grant_type:    GrantType::CLIENT_CREDENTIALS,
-            client_id:     client_id,
+            client_id:,
             client_secret: @@api_client&.[](client_id)&.[](:settings)&.[](:client_secret)
           }
           url = "#{ @@api_client&.[](client_id)&.[](:settings)&.[](:site) }#{ @@api_client&.[](client_id)&.[](:settings)&.[](:token_url_path) }"
 
-          response = ::RestClient::Request.execute({ method: :post, url: url, payload: payload })
+          response = ::RestClient::Request.execute(method: :post, url:, payload:)
 
           if Http.ok?(response.code)
             content_type = MIME::Types[response&.headers&.[](:content_type)].first

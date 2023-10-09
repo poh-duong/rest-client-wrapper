@@ -34,12 +34,10 @@ module RestClientWrapper
       before(:example) do
         WebMock.reset_executed_requests!
         @oauth = Authenticator::Oauth.new(
-          {
-            site:           "#{ @api_token_uri.scheme }://#{ @api_token_uri.host }",
-            token_url_path: @api_token_uri.path,
-            client_id:      @client_id,
-            client_secret:  @client_secret
-          }
+          site:           "#{ @api_token_uri.scheme }://#{ @api_token_uri.host }",
+          token_url_path: @api_token_uri.path,
+          client_id:      @client_id,
+          client_secret:  @client_secret
         )
         @current_token = FactoryBot.build(:token).token
         request = FactoryBot.build(:oauth_token_request, { headers: FactoryBot.build(:request_headers, { host: @api_token_uri.host }).to_h }).to_h
@@ -56,12 +54,12 @@ module RestClientWrapper
 
         it "will only make one API request to renew the access token" do
           t1 = Thread.new do
-            Authenticator::Oauth.authenticate({ client_id: @client_id })
+            Authenticator::Oauth.authenticate(client_id: @client_id)
           end
 
           sleep(1) # Give t1 a head start so that it can get the lock before t2 does
           t2 = Thread.new do
-            Authenticator::Oauth.authenticate({ client_id: @client_id, access_token: @current_token })
+            Authenticator::Oauth.authenticate(client_id: @client_id, access_token: @current_token)
           end
 
           t1.join
@@ -87,7 +85,7 @@ module RestClientWrapper
         end
 
         it "will make an API call to get a new token" do
-          Authenticator::Oauth.authenticate({ client_id: @client_id, access_token: @expired_token })
+          Authenticator::Oauth.authenticate(client_id: @client_id, access_token: @expired_token)
           parsed_response = JSON.parse(@response[:body]).symbolize_keys
 
           expect(@oauth.tokens[@client_id][:access_token]).to eq(parsed_response[:access_token])
