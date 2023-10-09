@@ -23,6 +23,5 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.before(:suite) do
     FactoryBot.find_definitions
-    config.include_context "stub_helper"
   end
 end

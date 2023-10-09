@@ -1,4 +1,5 @@
 AllCops:
+  NewCops: enable
   DisplayCopNames: true
   DisplayStyleGuide: true
   Exclude:
@@ -9,11 +10,6 @@ AllCops:
 Style/Documentation:
   Exclude:
     - db/migrate/* # Migration names should be sufficiently descriptive.
-
-# Ruby 3.0+ optional feature, except rubocop expects that it has been opted-in, rubocop wants this at the top of every file:
-# frozen_string_literal: true
-Style/FrozenStringLiteralComment:
-  Enabled: false
 
 # The default is too small
 Metrics/ClassLength:
@@ -41,6 +37,10 @@ Metrics/CyclomaticComplexity:
 # The default is too small
 Metrics/PerceivedComplexity:
   Max: 10
+
+# The default is too small
+Layout/LineLength:
+  Max: 200
 
 Layout/EmptyLinesAroundBlockBody:
   Exclude:
@@ -112,3 +112,6 @@ Style/RedundantSelf:
 # The default of require_no_parentheses makes ternary's much harder to read (and more error-prone when operator precedence comes into play)
 Style/TernaryParentheses:
   EnforcedStyle: require_parentheses
+
+Style/OpenStructUse:
+  Enabled: false

@@ -62,13 +62,13 @@ module RestClientWrapper
       url = _build_uri(request)
 
       loop do
-        access_token = @authenticator.is_a?(Authenticator::Oauth) ? @authenticator.access_token : nil
+        access_token = (@authenticator.is_a?(Authenticator::Oauth)) ? @authenticator.access_token : nil
         response_code = nil
 
         begin
-          payload = Request::HTTP_METHOD_FOR_JSON.include?(request.http_method) && request.headers[:content_type] == :json ? request.payload.to_json : request.payload
+          payload = (Request::HTTP_METHOD_FOR_JSON.include?(request.http_method) && request.headers[:content_type] == :json) ? request.payload.to_json : request.payload
           request.headers[:params] = request.query_params
-          response = ::RestClient::Request.execute({ method: request.http_method, url: url, payload: payload, headers: request.headers })
+          response = ::RestClient::Request.execute(method: request.http_method, url:, payload:, headers: request.headers)
           response_code = response&.code
         rescue StandardError => e
           response_code = e.response&.code
@@ -85,20 +85,20 @@ module RestClientWrapper
     end
 
     def execute_paginated_request(request:, data: true)
-      return self.make_request_for_pages({ http_method: request.http_method, uri: request.uri, segment_params: request.segment_params, query_params: request.query_params, headers: request.headers, data: data }) # rubocop:disable Metrics/LineLength
+      return self.make_request_for_pages({ http_method: request.http_method, uri: request.uri, segment_params: request.segment_params, query_params: request.query_params, headers: request.headers, data: }) # rubocop:disable Metrics/LineLength
     end
 
     def make_request(http_method:, uri:, payload: {}, segment_params: {}, query_params: {}, headers: {})
-      request = Request.new({ http_method: http_method, uri: uri, payload: payload, segment_params: segment_params, query_params: query_params })
+      request = Request.new(http_method:, uri:, payload:, segment_params:, query_params:)
       request.headers = headers
-      return self.execute({ request: request })
+      return self.execute(request:)
     end
 
     def make_request_for_pages(http_method:, uri:, segment_params: {}, query_params: {}, headers: {}, data: false)
       raise RestClientError.new("Paginator not set, unable to make API call", nil, nil) unless @paginator
 
       @paginator.rest_client ||= self
-      return @paginator.paginate({ http_method: http_method, uri: uri, segment_params: segment_params, query_params: query_params, headers: headers, data: data })
+      return @paginator.paginate(http_method:, uri:, segment_params:, query_params:, headers:, data:)
     end
 
     private
@@ -106,7 +106,7 @@ module RestClientWrapper
     def _set_auth(request)
       return if @authenticator.nil?
 
-      auth = @authenticator.respond_to?(:generate_auth) ? @authenticator.generate_auth : {}
+      auth = (@authenticator.respond_to?(:generate_auth)) ? @authenticator.generate_auth : {}
       if @authenticator.is_a?(Authenticator::Custom)
         case @authenticator.type
         when :query_param
@@ -124,7 +124,7 @@ module RestClientWrapper
       parsed_uri = URI.parse(uri)
       raise ArgumentError, "URL host does not match config host of instance, unable to make API call" if parsed_uri.absolute? && @host.casecmp("#{ parsed_uri.scheme }://#{ parsed_uri.host }").nonzero?
 
-      return parsed_uri.absolute? ? uri : "#{ @host }#{ uri }"
+      return (parsed_uri.absolute?) ? uri : "#{ @host }#{ uri }"
     end
 
     def _validate_request(request)
@@ -172,7 +172,7 @@ module RestClientWrapper
 
     def _wait_and_retry(response_code, access_token)
       sleep(@retry_configs[response_code][:wait].to_f)
-      Authenticator::Oauth.authenticate({ client_id: @authenticator&.client_id, access_token: access_token }) if Http.unauthorized?(response_code) && @authenticator.is_a?(Authenticator::Oauth)
+      Authenticator::Oauth.authenticate(client_id: @authenticator&.client_id, access_token:) if Http.unauthorized?(response_code) && @authenticator.is_a?(Authenticator::Oauth)
       @retry_configs[response_code][:retry] += 1
     end
 

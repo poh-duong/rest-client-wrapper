@@ -31,7 +31,7 @@ A `rest_client` must be created to make requests (if the rest_client requires au
 require "rest_client_wrapper"
 
 # Create a rest_client
-rest_client = RestClientWrapper::RestClient.new({ host: "https://www.host.com" })
+rest_client = RestClientWrapper::RestClient.new(host: "https://www.host.com")
 ```
 
 ## Basic Usage: `make_request`
@@ -40,7 +40,7 @@ The `rest_client` can make HTTP requests using `make_request`:
 
 ```ruby
 # Make a request
-response = rest_client.make_request({ http_method: :get, uri: "https://www.host.com" })
+response = rest_client.make_request(http_method: :get, uri: "https://www.host.com")
 ```
 <a name="get_started"></a>
 ## Basic Usage: `execute`
@@ -51,23 +51,23 @@ _Segment parameters_ can be added to an existing `request`:
 
 ```ruby
 # Create an HTTP request with a segmented uri
-request = Request.new({ http_method: :get, uri: "/%<segment_1>s/%<segment_2>s" })
+request = Request.new(http_method: :get, uri: "/%<segment_1>s/%<segment_2>s")
 
 # Add the segment parameter(s) to the request ('%<segment_x>s' in the uri will be replaced with the matching segment param when the request is executed)
 request.segment_params = { segment_1: "user_id_0001", segment_2: "course_id_0001" }
 
 # Execute a request
-response = rest_client.execute({ request: request })
+response = rest_client.execute(request: request)
 ```
 
 _Segment parameters_ can be created with the `request`:
 
 ```ruby
 # Segment parameters can be created with the request
-request = Request.new({ http_method: :post, uri: "/%<segment_1>s", segment_params: { segment_1: "user_id_0001" }, payload: { first_name: "name" }, headers: { content_type: "application/json" } })
+request = Request.new(http_method: :post, uri: "/%<segment_1>s", segment_params: { segment_1: "user_id_0001" }, payload: { first_name: "name" }, headers: { content_type: "application/json" })
 
 # Execute a request
-response = rest_client.execute({ request: request })
+response = rest_client.execute(request: request)
 ```
 <a name="authentication"></a>
 ## Authentication
@@ -78,10 +78,10 @@ The `rest_client` can make authenticated HTTP requests using an `authenticator`.
 
 ```ruby
 # Add a Basic authenticator to the rest_client
-rest_client.authenticator = Authenticator::Basic.new({ username: "username", password: "password" })
+rest_client.authenticator = Authenticator::Basic.new(username: "username", password: "password")
 
 # Make a request
-response = rest_client.make_request({ http_method: :get, uri: "https://www.host.com/api/v1/resource" })
+response = rest_client.make_request(http_method: :get, uri: "https://www.host.com/api/v1/resource")
 ```
 
 ### Custom
@@ -93,39 +93,39 @@ response = rest_client.make_request({ http_method: :get, uri: "https://www.host.
 ```ruby
 # Add a Custom authenticator using query_param
 # The custom auth parameter will be added as a query parameter
-rest_client.authenticator = Authenticator::Custom.new({ type: :query_param, auth_param: { custom_auth_param: "auth_value" } })
+rest_client.authenticator = Authenticator::Custom.new(type: :query_param, auth_param: { custom_auth_param: "auth_value" })
 
 # Make a request
-response = rest_client.make_request({ http_method: :get, uri: "https://www.host.com/api/v1/resource" })
+response = rest_client.make_request(http_method: :get, uri: "https://www.host.com/api/v1/resource")
 ```
 
 ```ruby
 # Add a Custom authenticator using header
 # The custom auth parameter will be added to the request header
-rest_client.authenticator = Authenticator::Custom.new({ type: :header, auth_param: { custom_auth_param: "auth_value" } })
+rest_client.authenticator = Authenticator::Custom.new(type: :header, auth_param: { custom_auth_param: "auth_value" })
 
 # Make a request
-response = rest_client.make_request({ http_method: :get, uri: "https://www.host.com/api/v1/resource" })
+response = rest_client.make_request(http_method: :get, uri: "https://www.host.com/api/v1/resource")
 ```
 
 ### OAuth
 
 ```ruby
 # Add an OAuth authenticator to the rest_client
-rest_client.authenticator = Authenticator::Oauth.new({ site: "https://www.host.com", token_url_path: "token_url_path", client_id: "client_id", client_secret: "secret" })
+rest_client.authenticator = Authenticator::Oauth.new(site: "https://www.host.com", token_url_path: "token_url_path", client_id: "client_id", client_secret: "secret")
 
 # Make a request
-response = rest_client.make_request({ http_method: :get, uri: "/api/v1/user" })
+response = rest_client.make_request(http_method: :get, uri: "/api/v1/user")
 ```
 
 ### Token
 
 ```ruby
 # Add a Token authenticator to the rest_client
-rest_client.authenticator = Authenticator::Token.new({ access_token: "access_token" })
+rest_client.authenticator = Authenticator::Token.new(access_token: "access_token")
 
 # Make a request
-response = rest_client.make_request({ http_method: :get, uri: "/api/v1/user" })
+response = rest_client.make_request(http_method: :get, uri: "/api/v1/user")
 ```
 
 ## Pagination
@@ -139,7 +139,7 @@ The `rest_client` can make paginated HTTP requests using a `paginator`.
 rest_client.paginator = Paginator::HeaderLink.new
 
 # Make a request for paginated data
-rest_client.make_request_for_pages({ http_method: :get, uri: "/api/v1/user" })
+rest_client.make_request_for_pages(http_method: :get, uri: "/api/v1/user")
 ```
 
 ### Echo360
@@ -148,7 +148,7 @@ rest_client.make_request_for_pages({ http_method: :get, uri: "/api/v1/user" })
 # Add an Echo paginator to the rest_client
 rest_client.paginator = Paginator::Echo.new
 
-rest_client.make_request_for_pages({ http_method: :get, uri: "/api/v1/user" })
+rest_client.make_request_for_pages(http_method: :get, uri: "/api/v1/user")
 ```
 
 ---
@@ -184,7 +184,7 @@ config = {
   }
 }
 
-rest_client = RestClientWrapper::RestClient.new({ host: "host" })
+rest_client = RestClientWrapper::RestClient.new(host: "host")
 ```
 
 If the caller wishes for additional HTTP codes to be handled, they can be specified in the `config`:
@@ -197,7 +197,7 @@ config = {
   }
 }
 
-rest_client = RestClientWrapper::RestClient.new({ host: "host", config: config })
+rest_client = RestClientWrapper::RestClient.new(host: "host", config: config)
 ```
 
 ## make_request
@@ -389,8 +389,8 @@ _Response_ objects have the following methods:
 
 ```ruby
 begin
-  request = Request.new({http_method: :get, uri: "https://www.host.com/public/api/v1/resource" })
-  response = rest_client.execute({ request: request })
+  request = Request.new(http_method: :get, uri: "https://www.host.com/public/api/v1/resource")
+  response = rest_client.execute(request: request)
 rescue RestClientError => e
   e.response
 end
@@ -408,14 +408,14 @@ end
 host_url = "https://www.host.com"
 username = "api_user_name"
 password = "password"
-client = Client.new({ host: host_url })
-client.authenticator = Authenticator::Basic.new({ username: username, password: password })
-client.paginator = Paginator::HeaderLink.new({ per_page: 10 })
+client = Client.new(host: host_url)
+client.authenticator = Authenticator::Basic.new(username: username, password: password)
+client.paginator = Paginator::HeaderLink.new(per_page: 10)
 
-response = client.make_request({ http_method: :get, uri: "/api/v1/resource" })
+response = client.make_request(http_method: :get, uri: "/api/v1/resource")
 
 # paginated request
-data = client.make_request_for_pages({ http_method: :get, uri: "/api/v1/resource", data: true })
+data = client.make_request_for_pages(http_method: :get, uri: "/api/v1/resource", data: true)
 
 ```
 
@@ -424,14 +424,14 @@ data = client.make_request_for_pages({ http_method: :get, uri: "/api/v1/resource
 ```ruby
 canvas_host = "https://host.instructure.com"
 canvas_access_token = "access_token"
-canvas_client = Client.new({ host: canvas_host })
-canvas_client.authenticator = Authenticator::Token.new({ access_token: canvas_access_token })
-canvas_client.paginator = Paginator::HeaderLink.new({ per_page: 10 })
+canvas_client = Client.new(host: canvas_host)
+canvas_client.authenticator = Authenticator::Token.new(access_token: canvas_access_token)
+canvas_client.paginator = Paginator::HeaderLink.new(per_page: 10)
 
-canvas_response = canvas_client.make_request({ http_method: :get, uri: "/api/v1/accounts/1/terms" })
+canvas_response = canvas_client.make_request(http_method: :get, uri: "/api/v1/accounts/1/terms")
 
 # paginated request
-canvas_data = canvas_client.make_request_for_pages({ http_method: :get, uri: "/api/v1/accounts/1/terms", data: true })
+canvas_data = canvas_client.make_request_for_pages(http_method: :get, uri: "/api/v1/accounts/1/terms", data: true)
 ```
 
 ### Echo
@@ -440,12 +440,12 @@ canvas_data = canvas_client.make_request_for_pages({ http_method: :get, uri: "/a
 echo_host = "https://echo360.net.au"
 echo_client_id = "client_id"
 echo_client_secret = "client_secret"
-echo_client = Client.new({ host: echo_host })
-echo_client.authenticator = Authenticator::Oauth.new({ site: echo_host, token_url_path: "/oauth2/access_token", client_id: echo_client_id, client_secret: echo_client_secret })
-echo_client.paginator = Paginator::Echo.new({ limit: 10 })
+echo_client = Client.new(host: echo_host)
+echo_client.authenticator = Authenticator::Oauth.new(site: echo_host, token_url_path: "/oauth2/access_token", client_id: echo_client_id, client_secret: echo_client_secret)
+echo_client.paginator = Paginator::Echo.new(limit: 10)
 
-echo_response = echo_client.make_request({ http_method: :get, uri: "/public/api/v1/terms" })
-echo_data = echo_client.make_request_for_pages({ http_method: :get, uri: "/public/api/v1/terms", data: true })
+echo_response = echo_client.make_request(http_method: :get, uri: "/public/api/v1/terms")
+echo_data = echo_client.make_request_for_pages(http_method: :get, uri: "/public/api/v1/terms", data: true)
 ```
 
 ## Create a request object
@@ -453,32 +453,32 @@ echo_data = echo_client.make_request_for_pages({ http_method: :get, uri: "/publi
 Create a `rest_client`.
 
 ```ruby
-rest_client = RestClientWrapper::RestClient.new({ host: "https://www.host.com" })
+rest_client = RestClientWrapper::RestClient.new(host: "https://www.host.com")
 ```
 
 ## Request with a segmented absolute URI
 
 ```ruby
-request = Request.new({http_method: :get, uri: "https://www.host.com/public/api/v1/users/%<user_id>s" })
+request = Request.new(http_method: :get, uri: "https://www.host.com/public/api/v1/users/%<user_id>s")
 request.segment_params = { user_id: "user_id" }
-response = rest_client.execute({ request: request })
+response = rest_client.execute(request: request)
 ```
 
 ## Request with a segmented resource path
 
 ```ruby
-rest_client = RestClientWrapper::RestClient.new({ host: "https://www.host.com" })
-request = Request.new({ http_method: :get, uri: "/public/api/v1/users/%<user_id>s" })
+rest_client = RestClientWrapper::RestClient.new(host: "https://www.host.com")
+request = Request.new(http_method: :get, uri: "/public/api/v1/users/%<user_id>s")
 request.segment_params = { user_id: "user_id" }
-response = rest_client.execute({ request: request })
+response = rest_client.execute(request: request)
 ```
 
 ## Query Parameters
 
 ```ruby
-rest_client = RestClientWrapper::RestClient.new({ host: "https://www.host.com" })
-request = Request.new({ http_method: :put, uri: "/api/v1/resource/" })
+rest_client = RestClientWrapper::RestClient.new(host: "https://www.host.com")
+request = Request.new(http_method: :put, uri: "/api/v1/resource/")
 request.payload = { user_id: "user_id" }
 request.query_params = { id: "value" }
-response = rest_client.execute({ request: request })
+response = rest_client.execute(request: request)
 ```

@@ -25,20 +25,18 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
 
     before(:context) do
       @api_url = URI.parse("http://fake_api_site.com")
-      @rest_client = RestClient.new({ host: @api_url.to_s })
+      @rest_client = RestClient.new(host: @api_url.to_s)
 
       @client_id = "client_id"
       @client_secret = "client_secret"
       @api_token_uri = URI.parse("http://fake_oauth_token.com/token_url_path")
 
-      @oauth_client = RestClient.new({ host: @api_url.to_s })
+      @oauth_client = RestClient.new(host: @api_url.to_s)
       @oauth_client.authenticator = Authenticator::Oauth.new(
-        {
-          site:           "#{ @api_token_uri.scheme }://#{ @api_token_uri.host }",
-          token_url_path: @api_token_uri.path,
-          client_id:      @client_id,
-          client_secret:  @client_secret
-        }
+        site:           "#{ @api_token_uri.scheme }://#{ @api_token_uri.host }",
+        token_url_path: @api_token_uri.path,
+        client_id:      @client_id,
+        client_secret:  @client_secret
       )
     end
 
@@ -47,7 +45,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       before(:example) do
         @course_id = "fake_course_id"
         @uri = "/api/v1/courses/#{ @course_id }"
-        @rest_client.authenticator = Authenticator::Basic.new({ username: "username", password: "password" })
+        @rest_client.authenticator = Authenticator::Basic.new(username: "username", password: "password")
         request = FactoryBot.build(:request, { body: {}, headers: FactoryBot.build(:request_headers, { host: @api_url.host }).to_h }).to_h
         response = FactoryBot.build(:response).to_h
         @api_request = stub_request(:get, "#{ @api_url }#{ @uri }").with(request).to_return(response)
@@ -56,9 +54,9 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when the request is valid" do
 
         it "will return a valid response" do
-          request = Request.new({ http_method: :get, uri: "/api/v1/courses/%<course_id>s" })
+          request = Request.new(http_method: :get, uri: "/api/v1/courses/%<course_id>s")
           request.segment_params = { course_id: @course_id }
-          @rest_client.execute({ request: request })
+          @rest_client.execute(request:)
           expect(@api_request).to have_been_requested
           expect(@api_request).to have_been_requested.times(1)
         end
@@ -68,7 +66,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when put request with query params and payload" do
 
         before(:example) do
-          @request = Request.new({ http_method: :put, uri: "/api/v1/courses/%<course_id>s" })
+          @request = Request.new(http_method: :put, uri: "/api/v1/courses/%<course_id>s")
           @request.segment_params = { course_id: @course_id }
           @request.payload = { id: "value" }
           @request.query_params = { param: "value" }
@@ -79,7 +77,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
 
         it "has query string params in URL and payload as json in body" do
           @api_request = stub_request(:put, "#{ @api_url }#{ @uri }?#{ @request.query_params.to_query }").with(@mock_request).to_return(@response)
-          @rest_client.execute({ request: @request })
+          @rest_client.execute(request: @request)
           expect(@api_request).to have_been_requested
         end
 
@@ -106,9 +104,9 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
         end
 
         it "will get a new access_token" do
-          request = Request.new({ http_method: :get, uri: @uri })
+          request = Request.new(http_method: :get, uri: @uri)
           request.segment_params = { course_id: @course_id }
-          @oauth_client.execute({ request: request })
+          @oauth_client.execute(request:)
           @requests.each do |req|
             expect(req).to have_been_requested.times(1)
           end
@@ -126,9 +124,9 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
         end
 
         it "will raise an exception" do
-          request = Request.new({ http_method: :get, uri: "/api/v1/courses/%<course_id>s" })
+          request = Request.new(http_method: :get, uri: "/api/v1/courses/%<course_id>s")
           request.segment_params = { course_id: @course_id }
-          expect { @rest_client.execute({ request: request }) }.to raise_exception(RestClientError)
+          expect { @rest_client.execute(request:) }.to raise_exception(RestClientError)
           expect(@api_request).to have_been_requested.times(1)
         end
 
@@ -144,9 +142,9 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
         end
 
         it "will retry three times than raise an exception" do
-          request = Request.new({ http_method: :get, uri: "/api/v1/courses/%<course_id>s" })
+          request = Request.new(http_method: :get, uri: "/api/v1/courses/%<course_id>s")
           request.segment_params = { course_id: @course_id }
-          expect { @rest_client.execute({ request: request }) }.to raise_exception(RestClientError)
+          expect { @rest_client.execute(request:) }.to raise_exception(RestClientError)
           expect(@api_request).to have_been_requested.times(4) # initial request + 3 retries
         end
 
@@ -160,7 +158,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
         WebMock.reset_executed_requests!
         @course_id = "fake_course_id"
         @uri = "/api/v1/courses/#{ @course_id }"
-        @rest_client.authenticator = Authenticator::Basic.new({ username: "username", password: "password" })
+        @rest_client.authenticator = Authenticator::Basic.new(username: "username", password: "password")
         request = FactoryBot.build(:request, { body: {}, headers: FactoryBot.build(:request_headers, { host: @api_url.host }).to_h }).to_h
         response = FactoryBot.build(:response).to_h
         @api_request = stub_request(:get, "#{ @api_url }#{ @uri }").with(request).to_return(response)
@@ -169,7 +167,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when the request is valid" do
 
         it "will return a valid response" do
-          @rest_client.make_request({ http_method: :get, uri: @uri })
+          @rest_client.make_request(http_method: :get, uri: @uri)
           expect(@api_request).to have_been_requested
           expect(@api_request).to have_been_requested.times(1)
         end
@@ -186,7 +184,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
         @per_page = 500
         @requests = []
 
-        @rest_client.authenticator = Authenticator::Basic.new({ username: "username", password: "password" })
+        @rest_client.authenticator = Authenticator::Basic.new(username: "username", password: "password")
 
         # Stubing requests and responses for pagination calls
         1.upto(4) do |page_number|
@@ -204,7 +202,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
 
         it "will recursively make pagination requests until there's no page left" do
           skip "TODO: move to Paginator"
-          @rest_client.get_all_pages({ http_method: :get, uri: @uri, payload: { per_page: @per_page } })
+          @rest_client.get_all_pages(http_method: :get, uri: @uri, payload: { per_page: @per_page })
           @requests.each do |request|
             expect(request).to have_been_requested.times(1)
           end
@@ -218,7 +216,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
     describe "#_validate_request" do
 
       before(:example) do
-        @request = Request.new({ http_method: :get, uri: "/public/api/v1/users/%<user_id>s" })
+        @request = Request.new(http_method: :get, uri: "/public/api/v1/users/%<user_id>s")
       end
 
       context "when URI is missing a segments parameter" do
@@ -232,7 +230,7 @@ module RestClientWrapper # rubocop:disable Metrics/ModuleLength
       context "when all segment parameters are present for URI" do
 
         before(:example) do
-          @request = Request.new({ http_method: :get, uri: "/public/api/v1/courses/%<course_id>s/user/%<user_id>s" })
+          @request = Request.new(http_method: :get, uri: "/public/api/v1/courses/%<course_id>s/user/%<user_id>s")
           @request.segment_params = { user_id: "user_id", course_id: "course_id" }
         end
 

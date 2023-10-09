@@ -20,7 +20,7 @@ require "colorize"
 require "date"
 
 GEM_NAME = "rest-client-wrapper".freeze
-GEM_VERSION = "3.1.0".freeze
+GEM_VERSION = "5.0.0".freeze
 
 GEM_FILENAME = "#{ GEM_NAME }-#{ GEM_VERSION }.gem".freeze
 GEM_SPEC = "#{ GEM_NAME }.gemspec".freeze
